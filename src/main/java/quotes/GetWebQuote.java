@@ -30,7 +30,7 @@ public class GetWebQuote {
                 line = reader.readLine();
             }
             reader.close();
-            makeQuote(sb.toString());
+            makeAndPrintQuote(sb.toString());
             return true;
         } catch(IOException e){
             e.printStackTrace();
@@ -38,14 +38,11 @@ public class GetWebQuote {
         }
     }
 
-    public Quote makeQuote(String quote){
+    public Quote makeAndPrintQuote(String quote){
         String[] result = new Gson().fromJson(quote, String[].class);
         Quote webQuote = new Quote("Ron Swanson", result[0]);
-        printQuote(webQuote);
+        System.out.println(webQuote.toString());
         return webQuote;
     }
 
-    public void printQuote(Quote quote){
-        System.out.println(quote.toString());
-    }
 }

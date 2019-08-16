@@ -36,6 +36,7 @@ public class App {
             while(reader.hasNextLine()){
                 sb.append(reader.nextLine());
             }
+            System.out.println(sb.toString());
             return sb.toString();
         } catch (IOException e){
             e.printStackTrace();

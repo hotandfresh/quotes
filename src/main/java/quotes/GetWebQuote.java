@@ -1,5 +1,7 @@
 package quotes;
 
+import com.google.gson.Gson;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -19,9 +21,7 @@ public class GetWebQuote {
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
 
-            System.out.println("sending request");
             BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            System.out.println("request came back");
 
             StringBuilder sb = new StringBuilder();
             String line = reader.readLine();
@@ -29,15 +29,23 @@ public class GetWebQuote {
                 sb.append(line);
                 line = reader.readLine();
             }
-
-            System.out.println(sb.toString());
-
+            reader.close();
+            makeQuote(sb.toString());
+            return true;
         } catch(IOException e){
             e.printStackTrace();
             return false;
         }
-        return true;
     }
 
+    public Quote makeQuote(String quote){
+        String[] result = new Gson().fromJson(quote, String[].class);
+        Quote webQuote = new Quote("Ron Swanson", result[0]);
+        printQuote(webQuote);
+        return webQuote;
+    }
 
+    public void printQuote(Quote quote){
+        System.out.println(quote.toString());
+    }
 }

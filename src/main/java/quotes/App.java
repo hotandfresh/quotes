@@ -13,6 +13,7 @@ import java.util.*;
 public class App {
     //http://swquotesapi.digitaljedi.dk/api/SWQuote/RandomStarWarsQuote
     //https://ron-swanson-quotes.herokuapp.com/v2/quotes
+    //http://api.forismatic.com/api/1.0/?method=getQuote&format=json&lang=en
 
     public static void main(String[] args){
         try{

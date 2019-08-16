@@ -13,10 +13,6 @@ import static org.junit.Assert.*;
 
 public class AppTest {
     App newApp;
-    @Before
-    public void setUp()throws Exception{
-        App newApp = new App();
-    }
 
     @Test
     public void canReadFile() throws Exception{

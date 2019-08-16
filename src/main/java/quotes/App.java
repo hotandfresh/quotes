@@ -6,15 +6,25 @@ package quotes;
 import com.google.gson.Gson;
 
 import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.*;
 
 public class App {
+    //http://swquotesapi.digitaljedi.dk/api/SWQuote/RandomStarWarsQuote
+    //https://ron-swanson-quotes.herokuapp.com/v2/quotes
+    //http://api.forismatic.com/api/1.0/?method=getQuote&format=json&lang=en
 
     public static void main(String[] args){
-        String allQuotesAsString = readFile();
-        Quote[] allQuotes = storeQuotes(allQuotesAsString);
-        int randomNumber = generateRandomNumber(allQuotes);
-        printAuthorAndQuote(allQuotes, randomNumber);
+        try{
+            GetWebQuote newWebQuote = new GetWebQuote("https://ron-swanson-quotes.herokuapp.com/v2/quotes");
+            newWebQuote.makeCall();
+        } catch (Exception e){
+            String allQuotesAsString = readFile();
+            Quote[] allQuotes = storeQuotes(allQuotesAsString);
+            int randomNumber = generateRandomNumber(allQuotes);
+            printAuthorAndQuote(allQuotes, randomNumber);
+        }
     }
 
     public static String readFile(){
@@ -26,6 +36,7 @@ public class App {
             while(reader.hasNextLine()){
                 sb.append(reader.nextLine());
             }
+            System.out.println(sb.toString());
             return sb.toString();
         } catch (IOException e){
             e.printStackTrace();

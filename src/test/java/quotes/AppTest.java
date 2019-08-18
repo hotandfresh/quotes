@@ -3,10 +3,13 @@
  */
 package quotes;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import static org.junit.Assert.*;
@@ -23,27 +26,57 @@ public class AppTest {
     @Test
     public void canStoreQuotes(){
         String allTheQuotesAsAString = newApp.readFile();
-        Quote[] quotesArr = newApp.storeQuotes(allTheQuotesAsAString);
-        assertTrue("There are quotes inside this array", quotesArr.length > 0);
+        ArrayList<Quote> quotesArr = newApp.storeQuotes(allTheQuotesAsAString);
+        assertTrue("There are quotes inside this array", quotesArr.size() > 0);
     }
 
     @Test
     public void canPrintQuotes(){
         String allTheQuotesAsAString = newApp.readFile();
-        Quote[] quotesArr = newApp.storeQuotes(allTheQuotesAsAString);
+        ArrayList<Quote> quotesArr = newApp.storeQuotes(allTheQuotesAsAString);
         String value ="Marilyn Monroe:  “I am good, but not an angel. I do sin, but I am not the devil. I am just a small girl in a big world trying to find someone to love.”";
 
-        assertEquals(value.trim(), quotesArr[0].toString().trim());
+        assertEquals(value.trim(), quotesArr.get(0).toString().trim());
     }
+
     @Test
     public void testRandomNumGen(){
         String allTheQuotesAsAString = newApp.readFile();
-        Quote[] quotesArr = newApp.storeQuotes(allTheQuotesAsAString);
+        ArrayList<Quote> quotesArr = newApp.storeQuotes(allTheQuotesAsAString);
         int n = newApp.generateRandomNumber(quotesArr);
         boolean isInRange = false;
-        if(n >= 0 && n<= quotesArr.length){
+        if(n >= 0 && n<= quotesArr.size()){
             isInRange = true;
         }
         assertTrue(isInRange);
+    }
+
+    @Test(expected = IOException.class)
+    public void canMakeCall() throws IOException {
+        //if the API call can't be made, there will be an IOException
+        String result = newApp.makeCall("");
+
+    }
+
+    @Test
+    public void canWriteToFile() throws IOException{
+        //successful completion of this should mean that the araryList will grow in size by 1 more
+        //start the process once
+        String quoteFromWeb = newApp.makeCall("https://ron-swanson-quotes.herokuapp.com/v2/quotes");
+        String allQuotesAsString = newApp.readFile();
+        ArrayList<Quote> allQuotes = newApp.storeQuotes(allQuotesAsString);
+        allQuotes.add(newApp.printWebQuote(quoteFromWeb));
+        newApp.writeFile(allQuotes);
+        int result = allQuotes.size();
+
+        //then check if the new arrayList is longer by going through this process again
+        quoteFromWeb = newApp.makeCall("https://ron-swanson-quotes.herokuapp.com/v2/quotes");
+        allQuotesAsString = newApp.readFile();
+        allQuotes = newApp.storeQuotes(allQuotesAsString);
+        allQuotes.add(newApp.printWebQuote(quoteFromWeb));
+        int resultAfterRunningTheProcessAgain = allQuotes.size();
+
+        assertTrue(resultAfterRunningTheProcessAgain == result + 1);
+
     }
 }

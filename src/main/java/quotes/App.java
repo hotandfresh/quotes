@@ -60,6 +60,7 @@ public class App {
         return sb.toString();
     }
 
+    //writes a string, back to JSON, and puts it back in the file
     public static boolean writeFile(ArrayList<Quote> allQuotes) throws IOException{
         Gson gson = new Gson();
         FileWriter fileWriter = new FileWriter(new File("src/main/resources/recentquotes.JSON"));

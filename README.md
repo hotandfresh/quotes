@@ -1,4 +1,4 @@
-## Lab 8: Quotes
+## Quotes and 
 Application takes in a Json file and randomly prints out quotes from famous authors.
 
 ## Feature Task
